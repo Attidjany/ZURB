@@ -1,75 +1,70 @@
-import { redirect } from 'next/navigation';
-import { getSupabaseServerComponentClient } from '@/lib/supabaseServer';
+/* eslint-disable @typescript-eslint/no-misused-promises */
+'use client';
 
-async function signIn(formData: FormData) {
-  'use server';
-  const email = formData.get('email');
-  if (!email || typeof email !== 'string') {
-    throw new Error('Email is required.');
-  }
-  const supabase = getSupabaseServerComponentClient();
-  const redirectTo = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: {
-      emailRedirectTo: redirectTo
+import React, { useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import styles from './login.module.css';
+
+// Uses public keys (anon/publishable). Do NOT put service role here.
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+
+  async function handleMagicLinkLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setMsg(null);
+    setErr(null);
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo:
+            typeof window !== 'undefined'
+              ? `${window.location.origin}/projects`
+              : undefined,
+        },
+      });
+      if (error) throw error;
+      setMsg('Check your email for the magic link.');
+    } catch (e: any) {
+      setErr(e?.message ?? 'Login failed');
+    } finally {
+      setLoading(false);
     }
-  });
-  if (error) {
-    throw new Error(error.message);
-  }
-}
-
-export default async function LoginPage() {
-  const supabase = getSupabaseServerComponentClient();
-  const {
-    data: { session }
-  } = await supabase.auth.getSession();
-
-  if (session) {
-    redirect('/projects');
   }
 
   return (
-    <div className="login-wrapper">
-      <form action={signIn} className="login-form">
-        <h1>Zenoàh Urban Design Studio</h1>
-        <p>Access the planning studio via secure magic link.</p>
-        <label htmlFor="email">Email</label>
-        <input id="email" name="email" type="email" required autoComplete="email" />
-        <button type="submit">Send magic link</button>
+    <main className={styles.wrap}>
+      <h1 className={styles.title}>Sign in</h1>
+      <form onSubmit={handleMagicLinkLogin} className={styles.form}>
+        <label className={styles.label}>
+          Email
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            className={styles.input}
+          />
+        </label>
+        <button type="submit" className={styles.button} disabled={loading}>
+          {loading ? 'Sending…' : 'Send magic link'}
+        </button>
       </form>
-      <style jsx>{`
-        .login-wrapper {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          min-height: 100vh;
-          padding: 2rem;
-        }
-        .login-form {
-          width: 100%;
-          max-width: 420px;
-          background: #fff;
-          padding: 2rem;
-          border-radius: 1rem;
-          border: 1px solid #e5e7eb;
-          display: grid;
-          gap: 0.75rem;
-        }
-        button {
-          padding: 0.75rem 1rem;
-          border-radius: 999px;
-          border: none;
-          background-color: #1f2937;
-          color: #fff;
-          cursor: pointer;
-        }
-        button:hover,
-        button:focus-visible {
-          background-color: #111827;
-        }
-      `}</style>
-    </div>
+      {msg && <p className={styles.ok}>{msg}</p>}
+      {err && <p className={styles.err}>{err}</p>}
+      <p className={styles.hint}>
+        After sign-in you’ll be redirected to <code>/projects</code>.
+      </p>
+    </main>
   );
 }
