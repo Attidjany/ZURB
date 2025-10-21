@@ -1,0 +1,41 @@
+{
+  "name": "zuds",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@supabase/auth-helpers-nextjs": "^0.9.1",
+    "@supabase/auth-helpers-react": "^0.5.7",
+    "@supabase/supabase-js": "^2.39.0",
+    "@tiptap/react": "^2.2.4",
+    "@tiptap/starter-kit": "^2.2.4",
+    "clsx": "^2.1.0",
+    "maplibre-gl": "^3.5.2",
+    "next": "^14.2.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.2.1",
+    "@types/geojson": "^7946.0.14",
+    "@types/jest": "^29.5.12",
+    "@types/maplibre-gl": "^2.4.3",
+    "@types/node": "^20.12.7",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.3",
+    "jest": "^29.7.0",
+    "prettier": "^3.2.5",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.5"
+  }
+}
