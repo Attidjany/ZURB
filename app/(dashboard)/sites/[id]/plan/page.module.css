@@ -1,0 +1,12 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.todo {
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+}
