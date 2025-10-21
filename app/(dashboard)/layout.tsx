@@ -17,11 +17,11 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
   const userId: Database['public']['Tables']['profiles']['Row']['id'] = session.user.id;
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('email')
-    .eq('id', userId)
-    .single();
+const { data: profile } = await supabase
+  .from('profiles')
+  .select('email')
+  .eq('id' as const, session.user.id as string)
+  .single();
 
   return (
     <div className={styles.dashboard}>
