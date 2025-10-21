@@ -34,8 +34,9 @@ export default function LoginPage() {
       });
       if (error) throw error;
       setMsg('Check your email for the magic link.');
-    } catch (e: any) {
-      setErr(e?.message ?? 'Login failed');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Login failed';
+      setErr(message);
     } finally {
       setLoading(false);
     }

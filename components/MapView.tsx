@@ -8,6 +8,20 @@ interface MapViewProps {
   geojson?: GeoJSON.FeatureCollection;
 }
 
+type NestedCoordinates = GeoJSON.Position | NestedCoordinates[];
+
+function collectPositions(coords: NestedCoordinates): GeoJSON.Position[] {
+  if (!Array.isArray(coords) || coords.length === 0) {
+    return [];
+  }
+
+  if (typeof coords[0] === 'number') {
+    return [coords as GeoJSON.Position];
+  }
+
+  return (coords as NestedCoordinates[]).flatMap(collectPositions);
+}
+
 export function MapView({ geojson }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -56,14 +70,16 @@ export function MapView({ geojson }: MapViewProps) {
 
     const bbox = new maplibregl.LngLatBounds();
     geojson.features.forEach((feature) => {
-      const coordinates = feature.geometry && 'coordinates' in feature.geometry ? feature.geometry.coordinates : [];
-      const flatten = (coords: any[]): [number, number][] => {
-        if (typeof coords[0] === 'number') {
-          return [coords as [number, number]];
-        }
-        return coords.flatMap((inner) => flatten(inner));
-      };
-      flatten(coordinates as any[]).forEach((coord) => bbox.extend(coord as [number, number]));
+      const coordinates =
+        feature.geometry && 'coordinates' in feature.geometry ? feature.geometry.coordinates : null;
+
+      if (!coordinates) {
+        return;
+      }
+
+      collectPositions(coordinates as NestedCoordinates).forEach((coord) =>
+        bbox.extend(coord as [number, number])
+      );
     });
 
     if (bbox.isEmpty()) {
