@@ -1,0 +1,51 @@
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.scenarioForm {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 420px;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+}
+
+.createButton {
+  border: none;
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+  background: #111827;
+  color: #fff;
+  cursor: pointer;
+}
+
+.createButton:hover,
+.createButton:focus-visible {
+  background: #1f2937;
+}
+
+.scenarioGrid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.scenarioGridItem {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+}
+
+.scenarioLink {
+  text-decoration: none;
+  color: inherit;
+  display: grid;
+  gap: 0.5rem;
+}
