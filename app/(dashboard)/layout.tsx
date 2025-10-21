@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Database } from '@/lib/types';
 import { getSupabaseServerComponentClient } from '@/lib/supabaseServer';
 import styles from './layout.module.css';
