@@ -1,6 +1,7 @@
+
 import { cookies, headers } from 'next/headers';
 import { createServerClient, createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { Database } from './types';
+import type { Database } from '@/types/supabase'; // <-- your generated types file
 
 export function getSupabaseServerClient() {
   const cookieStore = cookies();
