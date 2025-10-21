@@ -15,7 +15,9 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     redirect('/login');
   }
 
-  const userId: Database['public']['Tables']['profiles']['Row']['id'] = session.user.id;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const userId = session.user.id;
+//const userId: Database['public']['Tables']['profiles']['Row']['id'] = session.user.id;
 
 const { data: profile } = await supabase
   .from('profiles')
