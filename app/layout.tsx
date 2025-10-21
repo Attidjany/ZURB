@@ -1,18 +1,19 @@
+import type { Metadata } from 'next';
 import './globals.css';
-import { ReactNode } from 'react';
-import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Zenoàh Urban Design Studio',
-  description: 'Plan resilient urban developments informed by gold-indexed construction costs.'
+  title: 'ZURB',
+  description: 'Zenoàh Urban Design Studio',
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body>
-        <main>{children}</main>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
