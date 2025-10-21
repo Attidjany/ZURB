@@ -4,6 +4,7 @@ import { getSupabaseServerComponentClient } from '@/lib/supabaseServer';
 import { ScenarioPlanner } from '@/components/ScenarioPlanner';
 import { NotesEditor } from '@/components/NotesEditor';
 import { updateScenarioNotesAction } from '@/server/scenarios';
+import styles from './page.module.css';
 
 export default async function ScenarioDetailPage({ params }: { params: { id: string } }) {
   const supabase = getSupabaseServerComponentClient();
@@ -37,9 +38,9 @@ export default async function ScenarioDetailPage({ params }: { params: { id: str
   }
 
   return (
-    <div className="stack">
-      <header>
-        <div>
+    <div className={styles.stack}>
+      <header className={styles.header}>
+        <div className={styles.headerInfo}>
           <Link href={`/sites/${scenario.site_id}/scenarios`}>← Back to scenarios</Link>
           <h1>{scenario.name}</h1>
           <p>Site: {scenario.sites?.name ?? 'Unknown'}</p>
@@ -61,11 +62,11 @@ export default async function ScenarioDetailPage({ params }: { params: { id: str
         overheads={overheads[0]}
         items={items ?? []}
       />
-      <section className="notes">
+      <section className={styles.notes}>
         <h2>Scenario notes</h2>
         <NotesEditor initialContent={scenario.notes ?? ''} onSave={saveNotes} />
       </section>
-      <section className="todo">
+      <section className={styles.todo}>
         <h2>Geo exports</h2>
         <p>
           GeoJSON export is coming soon. For now download the placeholder{' '}
@@ -75,36 +76,6 @@ export default async function ScenarioDetailPage({ params }: { params: { id: str
           .
         </p>
       </section>
-      <style jsx>{`
-        .stack {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-        }
-        header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: 1rem;
-        }
-        header div {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-        header a {
-          text-decoration: none;
-          color: #2563eb;
-        }
-        .notes,
-        .todo {
-          background: #fff;
-          padding: 1.5rem;
-          border-radius: 1rem;
-          border: 1px solid #e5e7eb;
-        }
-      `}</style>
     </div>
   );
 }

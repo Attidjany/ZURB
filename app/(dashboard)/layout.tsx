@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import type { Database } from '@/lib/types';
 import { getSupabaseServerComponentClient } from '@/lib/supabaseServer';
 import styles from './layout.module.css';
 
@@ -17,7 +18,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const { data: profile } = await supabase
     .from('profiles')
     .select('email')
-    .eq('id', session.user.id)
+    .eq('id', session.user.id as Database['public']['Tables']['profiles']['Row']['id'])
     .single();
 
   return (
